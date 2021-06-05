@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Pivotal report generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5 align-items-center h-100">
+    <h2 class="text-center">Pivotal reports</h2>
+    <div class="col-sm-12 col-lg-8 mr-auto ml-auto border p-4">
+        <form method="get" th:action="@{/search}" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="tableCategory">Select category on table</label>
+                    <select class="form-control" id="tableCategory" data-th-name="tableCategory" >
+                        <option th:each="tableCategory : ${T(com.test.synsis.testsearchengine.dto.Category).values()}"
+                                th:value="${tableCategory}"
+                                th:text="${tableCategory}">Table category
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="columnCategory">Select category on column</label>
+                    <select class="form-control" id="columnCategory" data-th-name="columnCategory" >
+                        <option th:each="columnCategory : ${T(com.test.synsis.testsearchengine.dto.Category).values()}"
+                                th:value="${columnCategory}"
+                                th:text="${columnCategory}">Column category
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="rowCategory">Select category on row</label>
+                    <select class="form-control" id="rowCategory" data-th-name="rowCategory" >
+                        <option th:each="categoryOnRow : ${T(com.test.synsis.testsearchengine.dto.Category).values()}"
+                                th:value="${categoryOnRow}"
+                                th:text="${categoryOnRow}">Row category
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="measure">Select measurement value</label>
+                    <select class="form-control" id="measure" data-th-name="measure">
+                        <option th:each="measureValue : ${T(com.test.synsis.testsearchengine.dto.Measure).values()}"
+                                th:text="${measureValue}"
+                                th:value="${measureValue.getMeasureValue()}">Measure
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-primary" type="submit">Generate report</button>
+                <a href="#" onclick="generateHtmlReport()" class="btn btn-success" role="button">Generate html report</a>
+            </div>
+
+            <!--            <a data-th-href="@{/htmlgenerate(columnCategory=${columnCategory},tableCategory=${tableCategory},rowCategory=${rowCategory},measure=${measure})}" class="btn btn-success" role="button">Generate html report</a>-->
+        </form>
+    </div>
+</div>
+<br/><br/><br/>
+<br/><br/><br/>
+<div class="container" data-th-if="${tableGuiModel != null}">
+    <div class="table-responsive">
+        <th:block th:each="model : ${tableGuiModel}">
+            <table class="table table-striped table-bordered table-dark">
+                <th:block th:each="row : ${model.getRowColumnValues()}">
+                    <tr>
+                        <th:block th:each="column : ${row}">
+                            <td th:text="${column}"></td>
+                        </th:block>
+                    </tr>
+                </th:block>
+            </table>
+        </th:block>
+    </div>
+</div>
+
+
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js'></script>
+<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js'></script>
+<script>
+    function generateHtmlReport() {
+        var tableCategorySelector = document.getElementById('tableCategory');
+        var tableCategoryValue =  tableCategorySelector.options[tableCategorySelector.selectedIndex].value;
+
+        var columnCategorySelector = document.getElementById('columnCategory');
+        var columnCategoryValue =  columnCategorySelector.options[columnCategorySelector.selectedIndex].value;
+
+        var rowCategorySelector = document.getElementById('rowCategory');
+        var rowCategoryValue =  rowCategorySelector.options[rowCategorySelector.selectedIndex].value;
+
+        var measureSelector = document.getElementById('measure');
+        var measureValue =  measureSelector.options[measureSelector.selectedIndex].value;
+
+        $.ajax({
+            url: "/htmlgenerate",
+            type: "get", //send it through get method
+            data: {
+                measure: measureValue,
+                tableCategory: tableCategoryValue,
+                columnCategory: columnCategoryValue,
+                rowCategory: rowCategoryValue
+            },
+            success: function () {
+                alert('Report has been generated successfully ');
+            },
+            error: function(err) {
+                console.log(err);
+                alert("Error occurred during error generation");
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: 'jdbc:h2:mem:testdb'
+  #    Open these params to use mysql db
+  #    url: 'jdbc:mysql://localhost:3306/testsynsis?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&autoReconnect=true'
+  #    username: 'root'
+  #    password: 'zaqxsw12'
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      #    show-sql: true
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: 'true'
+
