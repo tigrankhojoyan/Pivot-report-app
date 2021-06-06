@@ -14,6 +14,11 @@ import java.util.stream.Collectors;
 @Service
 public class IterationServiceImpl implements IterationService {
 
+    /**
+     * non-Javadoc
+     *
+     * @see IterationService#printPivotalReport(ReportObject)
+     */
     @Override
     public void printPivotalReport(ReportObject reportObject) {
         Map<Object, List<ColumnRawMeasure>> reportData = reportObject.getReportData();
@@ -42,6 +47,11 @@ public class IterationServiceImpl implements IterationService {
         }
     }
 
+    /**
+     * non-Javadoc
+     *
+     * @see IterationService#parseReportObjectToGuiModel(ReportObject)
+     */
     @Override
     public List<TableGuiModel> parseReportObjectToGuiModel(ReportObject reportObject) {
         List<TableGuiModel> tableRows = new ArrayList<>();
@@ -108,6 +118,14 @@ public class IterationServiceImpl implements IterationService {
 //        return reportObject;
 //    }
 
+    /**
+     * Finds measure value from list by column and row
+     *
+     * @param columnRawMeasures
+     * @param row
+     * @param column
+     * @return
+     */
     private String retrieveMeasureValue(List<ColumnRawMeasure> columnRawMeasures, String row, String column) {
         for (ColumnRawMeasure columnRawMeasure : columnRawMeasures) {
             if (row.equals(columnRawMeasure.getRowCategory()) && column.equals(columnRawMeasure.getColumnCategory())) {
