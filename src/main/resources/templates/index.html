@@ -17,7 +17,8 @@
                     <select class="form-control" id="tableCategory" data-th-name="tableCategory" >
                         <option th:each="tableCategory : ${T(com.test.synsis.testsearchengine.dto.Category).values()}"
                                 th:value="${tableCategory}"
-                                th:text="${tableCategory}">Table category
+                                th:text="${tableCategory}"
+                                th:selected="${tableCategory == selectedTableCategory}">Table category
                         </option>
                     </select>
                 </div>
@@ -26,7 +27,8 @@
                     <select class="form-control" id="columnCategory" data-th-name="columnCategory" >
                         <option th:each="columnCategory : ${T(com.test.synsis.testsearchengine.dto.Category).values()}"
                                 th:value="${columnCategory}"
-                                th:text="${columnCategory}">Column category
+                                th:text="${columnCategory}"
+                                th:selected="${columnCategory == selectedColumnCategory}">Column category
                         </option>
                     </select>
                 </div>
@@ -37,7 +39,8 @@
                     <select class="form-control" id="rowCategory" data-th-name="rowCategory" >
                         <option th:each="categoryOnRow : ${T(com.test.synsis.testsearchengine.dto.Category).values()}"
                                 th:value="${categoryOnRow}"
-                                th:text="${categoryOnRow}">Row category
+                                th:text="${categoryOnRow}"
+                                th:selected="${categoryOnRow == selectedRowCategory}">Row category
                         </option>
                     </select>
                 </div>
@@ -46,7 +49,8 @@
                     <select class="form-control" id="measure" data-th-name="measure">
                         <option th:each="measureValue : ${T(com.test.synsis.testsearchengine.dto.Measure).values()}"
                                 th:text="${measureValue}"
-                                th:value="${measureValue.getMeasureValue()}">Measure
+                                th:value="${measureValue.getMeasureValue()}"
+                                th:selected="${measureValue == selectedMeasure}">Measure
                         </option>
                     </select>
                 </div>
@@ -105,8 +109,9 @@
                 columnCategory: columnCategoryValue,
                 rowCategory: rowCategoryValue
             },
-            success: function () {
-                alert('Report has been generated successfully ');
+            success: function(data, textStatus, xhr) {
+                console.log(xhr.status);
+                alert(xhr.responseText)
             },
             error: function(err) {
                 console.log(err);

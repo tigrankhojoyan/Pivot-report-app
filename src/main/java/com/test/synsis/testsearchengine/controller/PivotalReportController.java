@@ -1,5 +1,7 @@
 package com.test.synsis.testsearchengine.controller;
 
+import com.test.synsis.testsearchengine.dto.Category;
+import com.test.synsis.testsearchengine.dto.Measure;
 import com.test.synsis.testsearchengine.dto.ReportObject;
 import com.test.synsis.testsearchengine.dto.TableGuiModel;
 import com.test.synsis.testsearchengine.service.IterationService;
@@ -25,10 +27,6 @@ public class PivotalReportController {
 
     @GetMapping("/")
     public String index() {
-//        model.addAttribute("tableCategory", "");
-//        model.addAttribute("columnCategory", "");
-//        model.addAttribute("rowCategory", "");
-//        model.addAttribute("measure", "");
         return "index";
     }
 
@@ -44,10 +42,10 @@ public class PivotalReportController {
         ReportObject reportObject = queryService.retrieveReportData(tableCategory, columnCategory, rowCategory, measure);
         iterationService.printPivotalReport(reportObject);
         List<TableGuiModel> tableGuiModel = iterationService.parseReportObjectToGuiModel(reportObject);
-        model.addAttribute("tableCategory", tableCategory);
-        model.addAttribute("columnCategory", columnCategory);
-        model.addAttribute("rowCategory", rowCategory);
-        model.addAttribute("measure", measure);
+        model.addAttribute("selectedTableCategory", Category.findCategoryByName(tableCategory));
+        model.addAttribute("selectedColumnCategory", Category.findCategoryByName(columnCategory));
+        model.addAttribute("selectedRowCategory", Category.findCategoryByName(rowCategory));
+        model.addAttribute("selectedMeasure", Measure.findMeasureByValue(measure));
         model.addAttribute("tableGuiModel", tableGuiModel);
         log.info(tableGuiModel.toString());
         return "index";
